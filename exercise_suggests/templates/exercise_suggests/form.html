@@ -1,0 +1,32 @@
+{% extends "exercise_suggests/base.html" %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+	
+	<p class="lead">BMIを計算してそれぞれに合った活動を提案します。</p>
+
+{% endblock page_header %}
+
+{% block content %}
+
+	<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">BMIとは</p>
+	<p class="pb-4">BMIは、身長と体重から算出される肥満度を示す指標の一つです。この値に基づいて、低体重、普通体重、肥満に分類されます。BMIが22のときにもっとも病気にかかりにくいとされ、このときの体重が適正体重とされます。BMIで判定できるのは成人に対してのみであるため、18歳未満の方はローレル指数などの別の指標をお使いください。<br>
+	なお、掲載されている情報は一般的な知識に基づいて作成された物であり、医師や専門家による指導やアドバイスを代替するものではありません。当サイトの情報に関しては一切の責任を負いかねますので、あらかじめご了承ください。</p>
+
+
+	<p class="text-center">年齢、身長、体重を入力してBMIを計算しましょう。</p>
+
+	<div class="row">
+		<div class="col"></div>
+		<div class="col">
+			<form action="{% url 'exercise_suggests:form' %}" method="post" class="form">
+				{% csrf_token %}
+				{% bootstrap_form form %}
+				{% buttons %}
+					<button name="submit" class="btn btn-primary">計算</button>
+				{% endbuttons %}
+			</form>
+		</div>
+		<div class="col"></div>
+
+{% endblock content %}

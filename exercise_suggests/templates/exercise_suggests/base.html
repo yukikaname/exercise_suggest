@@ -1,0 +1,32 @@
+{% load bootstrap4 %}
+
+<!doctype html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>健康サジェスター</title>
+
+	{% bootstrap_css %}
+	{% bootstrap_javascript jquery='full' %}
+
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-md navbar-light mb-4 border" style="background-color: #e3f2fd;">
+
+		<a class="navbar-brand" href="{% url 'exercise_suggests:form' %}">健康サジェスター</a>
+		
+	</nav>
+
+	<main role="main" class="container mb-5">
+		<div class="pb-2 mb-3 border-bottom">
+			{% block page_header %}{% endblock page_header %}
+		</div>
+		<div>
+			{% block content %}{% endblock content %}
+		</div>
+	</main>
+
+</body>
+</html>

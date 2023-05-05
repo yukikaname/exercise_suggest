@@ -1,0 +1,148 @@
+{% extends "exercise_suggests/base.html" %}
+
+{% block page_header %}
+	<p class="lead">結果</p>
+{% endblock page_header %}
+
+{% block content %}
+	<div class="row pb-4">
+		<div class="col-md">
+			<div class="card mb-4">
+				<div class="card-header" style="background-color: #E3F2FD">
+					<h6>判定結果</h6>
+				</div>
+				<div class="card-body">
+					<p class="card-text">あなたのBMIは {{ user_info.BMI }} です。</p>
+					<p>あなたは{{ obesity }}です。</p>
+					<p>あなたの適正体重は {{ user_info.app_weight }}kg です。</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md">
+			<table class="table table-bordered">
+				<caption>日本肥満学会「肥満症診療ガイドライン2022」及び厚生労働省「日本人の食事摂取基準(2020年版)」をもとに作成</caption>
+				<thead class=" thead-light">
+					<tr>
+						<th colspan="2" style="background-color: #E3F2FD;">肥満度判定基準</th>
+					</tr>
+					<tr>
+						<th>BMI</th>
+						<th>肥満度</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% if user_info.age >= 65 %}
+						<tr>
+							<td>BMI < 21.5</td>
+							<td>低体重</td>
+						</tr>
+						<tr>
+							<td>21.5 <= BMI < 25.0</td>
+							<td>普通体重</td>
+						</tr>
+					{% elif user_info.age >= 50 %}
+						<tr>
+							<td>BMI < 20.0</td>
+							<td>低体重</td>
+						</tr>
+						<tr>
+							<td>20.0 <= BMI < 25.0</td>
+							<td>普通体重</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td>BMI < 18.5</td>
+							<td>低体重</td>
+						</tr>
+						<tr>
+							<td>18.5 <= BMI < 25.0</td>
+							<td>普通体重</td>
+						</tr>
+					{% endif %}
+
+					<tr>
+						<td>25.0 <= BMI < 30.0</td>
+						<td>肥満(1度)</td>
+					</tr>
+					<tr>
+						<td>30.0 <= BMI < 35.0</td>
+						<td>肥満(2度)</td>
+					</tr>
+					<tr>
+						<td>35.0 <= BMI < 40.0</td>
+						<td>肥満(3度)</td>
+					</tr>
+					<tr>
+						<td>40.0 <= BMI</td>
+						<td>肥満(4度)</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<p>適性体重に近づけるために以下の提案をします。</p>
+	{% if obesity == "低体重" %}
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">目標</p>
+		<p>{{ target_w }}kgを目標とし、1か月で{{ target_w_change }}kgの増量を目指しましょう。</p>
+		<p>そのために、1日の摂取カロリーを{{ target_cal_change }}kcal増やしましょう。</p>
+
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">食事</p>
+		<p class="border-left pl-3" style="border-width: 10px !important">十分な食事を摂りましょう。</p>
+		<p>1日3食しっかりと食べ、タンパク質、脂質、炭水化物がバランスよく摂れるように意識しましょう。</p>
+
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">運動</p>
+		<p class="border-left pl-3" style="border-width: 10px !important;">身体をたくさん動かしましょう。</p>
+		<p>身体を動かすことでお腹を空かせて食事量を増やしましょう。</p>
+		<p>筋トレをして筋肉量を増やすことで体重を増やすことができます。腕立て伏せや腹筋、スクワットなどできるところから始め、少しづつでも強度を上げていきましょう。</p>
+
+	{% elif obesity == "普通体重" %}
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">目標</p>
+		{% if user_info.weight > user_info.app_weight %}
+			<p>{{ target_w }}kgを目標とし、1か月で{{ target_w_change }}kgの減量を目指しましょう。</p>
+			<p>そのために、1日の摂取カロリーを{{ target_cal_change }}kcal減らしましょう。</p>
+		{% elif user_info.weight < user_info.app_weight %}
+			<p>{{ target_w }}kgを目標とし、1か月で{{ target_w_change }}kgの増量を目指しましょう。</p>
+			<p>そのために、1日の摂取カロリーを{{ target_cal_change }}kcal増やしましょう。</p>
+		{% else %}
+			<p>おめでとうございます。あなたは既に適性体重を達成できています。</p>
+		{% endif %}
+
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">食事</p>
+		<p class="border-left pl-3" style="border-width: 10px !important;">バランスのとれた食事を意識しましょう。</p>
+		<p>1日3食しっかりと食べ、タンパク質、脂質、炭水化物がバランスよく摂れるように意識しましょう。</p>
+
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">運動</p>
+		<p class="border-left pl-3" style="border-width: 10px !important;">継続的な運動習慣を維持しましょう。</p>
+		<p>ジョギングや水泳、サイクリングなど中強度の有酸素運動を1日30～60分、最低でも週3日は行いましょう。また、筋トレなどの無酸素運動を行うことで基礎代謝を高め太りにくい体を作ることができます。</p>
+		
+	{% elif obesity == "肥満(1度)" or obesity == "肥満(2度)" %}
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">目標</p>
+		<p>{{ target_w }}kgを目標とし、1か月で{{ target_w_change }}kgの減量を目指しましょう。</p>
+		<p>そのために、1日の摂取カロリーを{{ target_cal_change }}kcal減らしましょう。</p>
+
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">食事</p>
+		<p class="border-left pl-3" style="border-width: 10px !important;">適切な食事量を心がけましょう。</p>
+		<p>1日3食食べ、タンパク質、脂質、炭水化物がバランスよく摂れるように意識しましょう。また、食物繊維を取り入れることも効果的です。</p>
+		<p>食事中はゆっくりとよく噛んで食べましょう。</p>
+
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">運動</p>
+		<p class="border-left pl-3" style="border-width: 10px !important;">積極的な運動を心がけましょう。</p>
+		<p>ジョギングや水泳、サイクリングなど中強度の有酸素運動を1日30～60分、最低でも週3日は行いましょう。また、筋トレなどの無酸素運動を行うことで基礎代謝を高め太りにくい体を作ることができます。</p>
+			
+	{% elif obesity == "肥満(3度)" or obesity == "肥満(4度)" %}
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">目標</p>
+		<p>{{ target_w.lower }}～{{ target_w.upper}}kgを目標とし、1か月で{{ target_w_change }}kgの減量を目指しましょう。</p>
+		<p>そのために、1日の摂取カロリーを{{ target_cal_change }}kcal減らしましょう。</p>
+			
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">食事</p>
+		<p class="border-left pl-3" style="border-width: 10px !important;">食事の改善を優先しましょう。</p>
+		<p>1日3食食べ、タンパク質、脂質、炭水化物がバランスよく摂れるように意識しましょう。また、食物繊維を取り入れることも効果的です。</p>
+		<p>食事中はゆっくりとよく噛んで食べましょう。</p>
+			
+		<p class="border-left pl-3 py-2 lead bg-light" style="border-width: 10px !important; border-color: #99CCFF !important;">運動</p>
+		<p class="border-left pl-3" style="border-width: 10px !important;">運動は軽く体を動かすことから始めましょう。</p>
+		<p>ウォーキングやラジオ体操、ストレッチなど負担の少ない運動から始めましょう。</p>
+	{% endif %}
+{% endblock content %}
